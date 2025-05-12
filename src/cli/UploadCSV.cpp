@@ -7,7 +7,7 @@
 const string cmdDescription{"upload an unclassified csv data file"};
 
 // constructor. how to reference the KNN_Server?
-UploadCSV::UploadCSV(KNN_ClientServer& clientServerPtr, DefaultIO& dio) :
+UploadCSV::UploadCSV(KNN_Client_Handler& clientServerPtr, DefaultIO& dio) :
     Command(cmdDescription, dio, clientServerPtr){
 }
 

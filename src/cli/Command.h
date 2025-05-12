@@ -3,7 +3,7 @@
 
 #include <string>
 #include "DefaultIO.h"
-#include "../knnserver/KNN_ClientServer.h"
+#include "../knnserver/KNN_Client_Handler.h"
 
 using namespace std;
 
@@ -14,9 +14,9 @@ public:
 protected:
     string description;
     DefaultIO& dio;
-    KNN_ClientServer& client_server;
+    KNN_Client_Handler& client_server;
 
-    Command(string cmdDescription, DefaultIO& dio, KNN_ClientServer& clientServerPtr);
+    Command(string cmdDescription, DefaultIO& dio, KNN_Client_Handler& clientServerPtr);
 };
 
 

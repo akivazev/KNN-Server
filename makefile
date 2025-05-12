@@ -13,7 +13,7 @@ SRC_DIR = cli knnserver knnset
 SRC_ALL = $(wildcard src/cli/*.cpp) $(wildcard src/knnserver/*.cpp) $(wildcard src/knnset/*.cpp)
 
 SRC_SERVER = $(wildcard src/cli/*.cpp) $(wildcard src/knnset/*.cpp) src/knnserver/AbstractPeer.cpp \
-	src/knnserver/KNN_ClientServer.cpp src/knnserver/KNN_MainServer.cpp src/main/server_main.cpp
+	src/knnserver/KNN_Client_Handler.cpp src/knnserver/KNN_MainServer.cpp src/main/server_main.cpp
 
 SRC_CLIENT = $(SRC_ALL) src/main/client_main.cpp
 
@@ -29,7 +29,7 @@ server: server.out
 
 server.out: $(OBJS_SERVER)
 	$(CXX) $(CXXFLAGS) -o $@ $^
-	rm $(OBJS_SERVER)
+	#rm $(OBJS_SERVER)
 
 client.out: $(OBJS_CLIENT)
 	$(CXX) $(CXXFLAGS) -o $@ $^

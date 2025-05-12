@@ -6,17 +6,17 @@
 
 const string cmdDescription{"download results"};
 
-DownloadResults::DownloadResults(KNN_ClientServer& clientServerPtr, DefaultIO& dio) :
+DownloadResults::DownloadResults(KNN_Client_Handler& clientServerPtr, DefaultIO& dio) :
         Command(cmdDescription, dio, clientServerPtr) {}
 
 void DownloadResults::execute() {
 
     client_server.writeResultsToFile(dio);
 
-//    void (KNN_ClientServer::*func)(DefaultIO);
-//    func = &KNN_ClientServer::downloadResults;
+//    void (KNN_Client_Handler::*func)(DefaultIO);
+//    func = &KNN_Client_Handler::downloadResults;
 
     // download the results in a separate thread
-    thread download(KNN_ClientServer::downloadResults, ref(dio));
+    thread download(KNN_Client_Handler::downloadResults, ref(dio));
     download.join(); // remove when using with clients
 }

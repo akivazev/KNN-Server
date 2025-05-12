@@ -4,23 +4,23 @@
 
 #include "KNN_MainServer.h"
 
-void KNN_MainServer::run(int argc, char **argv) {
+[[noreturn]] void KNN_MainServer::run(int argc, char **argv) {
     KNN_MainServer server = initServer(argc, argv);
 
     while(true) {
         int clientSock = server.connectClient();
 
-        thread clientServer{KNN_ClientServer::runClientServer, clientSock};
+        thread clientServer{KNN_Client_Handler::runClientHandler, clientSock};
     }
 }
 
-void KNN_MainServer::runAlone(int argc, char **argv) {
-    KNN_MainServer server = initServer(argc, argv);
+[[noreturn]] void KNN_MainServer::runAlone(int argc, char **argv) {
+//    KNN_MainServer server = initServer(argc, argv);
 
     while(true) {
 //        int clientSock = server.connectClient();
 
-        thread clientServer{KNN_ClientServer::runClientServer, 5};
+        thread clientServer{KNN_Client_Handler::runClientHandler, 5};
         clientServer.join(); // remove when using with clients
     }
 
@@ -52,8 +52,7 @@ int KNN_MainServer::createSocket(const int port) {
     }
 
     // bind
-    struct sockaddr_in sin;
-    memset(&sin, 0, sizeof(sin));
+    struct sockaddr_in sin = {};
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(port);
@@ -74,7 +73,7 @@ int KNN_MainServer::createSocket(const int port) {
 
 int KNN_MainServer::connectClient() {
     // accept
-    struct sockaddr_in client_in;
+    struct sockaddr_in client_in{};
     unsigned int addr_len = sizeof(client_in);
 
     // returns socket for client from listen() queue or if it's empty, holds until a client enters

@@ -1,13 +1,7 @@
 #ifndef AP_1_EX_2_SERVER_H
 #define AP_1_EX_2_SERVER_H
 
-#include <sys/socket.h>
-#include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
 #include <fstream>
-#include <memory>
 #include "../knnset/KNN_Set.h"
 #include "AbstractPeer.h"
 #include "../cli/DefaultIO.h"
@@ -16,10 +10,10 @@
 
 using namespace std;
 
-class KNN_ClientServer{
+class KNN_Client_Handler {
 public:
 
-    static void runClientServer(int socket);
+    static void runClientHandler(int socket);
 
     static void runWithoutClient();
 
@@ -68,7 +62,7 @@ private:
     // queue of files to be downloaded by client
     queue<string> download_queue;
 
-    KNN_ClientServer(int socket);
+    explicit KNN_Client_Handler(int socket);
 
     /**
      * Parse the given regex pattern string from the whole input buffer

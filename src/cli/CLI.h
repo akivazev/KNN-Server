@@ -6,7 +6,7 @@
 #define AP_1_EX_4_CLI_H
 
 #include <map>
-#include "../knnserver/KNN_ClientServer.h"
+#include "../knnserver/KNN_Client_Handler.h"
 #include "StandardIO.h"
 #include "UploadCSV.h"
 #include "AlgoSettings.h"
@@ -25,16 +25,16 @@ struct Commands{
 
     map<int, Command&> command_map;
 
-    Commands(KNN_ClientServer& clientServer, DefaultIO& dio, bool& noExit);
+    Commands(KNN_Client_Handler& clientServer, DefaultIO& dio, bool& noExit);
     Command& at(int);
 };
 
 class CLI {
 public:
-    CLI(KNN_ClientServer& clientServer, DefaultIO& dio);
+    CLI(KNN_Client_Handler& clientServer, DefaultIO& dio);
     void start();
 private:
-    //KNN_ClientServer& clientServer;
+    //KNN_Client_Handler& clientServer;
     DefaultIO& dio;
     Commands commands;
     bool noExit;

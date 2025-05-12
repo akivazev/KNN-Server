@@ -6,7 +6,7 @@
 
 const string cmdDescription{"set algorithm settings"};
 
-AlgoSettings::AlgoSettings(KNN_ClientServer& clientServerPtr, DefaultIO& dio) :
+AlgoSettings::AlgoSettings(KNN_Client_Handler& clientServerPtr, DefaultIO& dio) :
     Command(cmdDescription, dio, clientServerPtr) {}
 
 void AlgoSettings::execute() {

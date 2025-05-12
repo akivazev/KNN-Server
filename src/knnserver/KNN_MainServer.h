@@ -13,15 +13,16 @@
 #include <cstring>
 #include <iostream>
 #include <thread>
-#include "KNN_ClientServer.h"
+#include "KNN_Client_Handler.h"
 #include "AbstractPeer.h"
 
 using namespace std;
 
 class KNN_MainServer {
 public:
-    static void run(int argc, char *argv[]);
-    static void runAlone(int argc, char *argv[]);
+    [[noreturn]] static void run(int argc, char *argv[]);
+
+    [[noreturn]] static void runAlone(int argc, char *argv[]);
 
 
 private:

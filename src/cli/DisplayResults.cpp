@@ -6,7 +6,7 @@
 
 const string cmdDescription{"display results"};
 
-DisplayResults::DisplayResults(KNN_ClientServer& clientServerPtr, DefaultIO& dio) :
+DisplayResults::DisplayResults(KNN_Client_Handler& clientServerPtr, DefaultIO& dio) :
         Command(cmdDescription, dio, clientServerPtr) {}
 
 void DisplayResults::execute() {

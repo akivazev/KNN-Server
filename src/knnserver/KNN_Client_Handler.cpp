@@ -1,22 +1,21 @@
-#include "KNN_ClientServer.h"
+#include "KNN_Client_Handler.h"
 #include "../cli/CLI.h"
 
-KNN_ClientServer::KNN_ClientServer(int socket) : sock(socket), dataset(KNN_Set()), uploadedData(false),
-    download_queue(){}
+KNN_Client_Handler::KNN_Client_Handler(int socket) : sock(socket), dataset(KNN_Set()), uploadedData(false) {}
 
-int KNN_ClientServer::getKVal() {
+int KNN_Client_Handler::getKVal() {
     return dataset.getK();
 }
 
-string KNN_ClientServer::getDistanceMethod() {
+string KNN_Client_Handler::getDistanceMethod() {
     return dataset.getDistanceMethodName();
 }
 
-void KNN_ClientServer::setUpload() {
+void KNN_Client_Handler::setUpload() {
     uploadedData = true;
 }
 
-bool KNN_ClientServer::dataExists(DefaultIO& dio) {
+bool KNN_Client_Handler::dataExists(DefaultIO& dio) {
     if (!uploadedData) {
         dio.write("please upload data");
         return false;
@@ -24,7 +23,7 @@ bool KNN_ClientServer::dataExists(DefaultIO& dio) {
     return true;
 }
 
-bool KNN_ClientServer::dataClassified(DefaultIO& dio) {
+bool KNN_Client_Handler::dataClassified(DefaultIO& dio) {
     if(!classifiedData) {
         dio.write("please classify the data");
         return false;
@@ -33,7 +32,7 @@ bool KNN_ClientServer::dataClassified(DefaultIO& dio) {
     return true;
 }
 
-void KNN_ClientServer::classify(DefaultIO& dio) {
+void KNN_Client_Handler::classify(DefaultIO& dio) {
 
     if(!dataExists(dio)) return;
 
@@ -56,7 +55,7 @@ void KNN_ClientServer::classify(DefaultIO& dio) {
 //    }
 }
 
-void KNN_ClientServer::writeResultsToIO(DefaultIO& dio) {
+void KNN_Client_Handler::writeResultsToIO(DefaultIO& dio) {
 
     if (!(dataExists(dio) || !dataClassified(dio)))
         return;
@@ -71,7 +70,7 @@ void KNN_ClientServer::writeResultsToIO(DefaultIO& dio) {
     dio.write("Done");
 }
 
-void KNN_ClientServer::writeResultsToFile(DefaultIO& dio) {
+void KNN_Client_Handler::writeResultsToFile(DefaultIO& dio) {
 
     if (!(dataExists(dio) || !dataClassified(dio)))
         return;
@@ -93,13 +92,13 @@ void KNN_ClientServer::writeResultsToFile(DefaultIO& dio) {
 
 }
 
-string KNN_ClientServer::getPrintFormat(int i) {
+string KNN_Client_Handler::getPrintFormat(int i) {
     std::stringstream s;
     s << i << "\t" << result[i-1].getTypeName();
     return s.str();
 }
 
-void KNN_ClientServer::downloadResults(DefaultIO& dio) {
+void KNN_Client_Handler::downloadResults(DefaultIO& dio) {
     dio.readToFile("result.txt");
 //    ifstream file("result.txt");
 //    string line;
@@ -118,8 +117,10 @@ void KNN_ClientServer::downloadResults(DefaultIO& dio) {
 }
 
 
-void KNN_ClientServer::runClientServer(int socket) {
-    KNN_ClientServer server(socket);
+void KNN_Client_Handler::runClientHandler(int socket) {
+
+    // Initialize client handler object
+    KNN_Client_Handler server(socket);
     StandardIO sio;
     DefaultIO& dio_ref = sio;
     CLI command_interface(server, dio_ref);
@@ -128,8 +129,8 @@ void KNN_ClientServer::runClientServer(int socket) {
     command_interface.start();
 }
 
-void KNN_ClientServer::runWithoutClient() {
-    KNN_ClientServer server(5);
+void KNN_Client_Handler::runWithoutClient() {
+    KNN_Client_Handler server(5);
     StandardIO sio;
     DefaultIO& dio_ref = sio;
     CLI command_interface(server, dio_ref);
@@ -144,7 +145,7 @@ void KNN_ClientServer::runWithoutClient() {
  * @param inputMsg input string from client
  * @return string representation of classification of the input vector parsed from inputMsg
  */
-string KNN_ClientServer::getTypeFromInput(const string &inputMsg) {
+string KNN_Client_Handler::getTypeFromInput(const string &inputMsg) {
     const static regex vectorPat {R"((\s|^)((\d+\.?|\d+\.\d+|\.\d+)(E(\+|\-)\d+)?(\s))+)"};
     const static regex distancePat {"(AUC|MAN|CHB|CAN|MIN)"};
     const static regex kPat {"(\\d+\\s*$)"};
@@ -173,7 +174,7 @@ string KNN_ClientServer::getTypeFromInput(const string &inputMsg) {
  * @param inputMsg input string from client
  * @return string representation of classification of the input vector parsed from inputMsg
  */
-string KNN_ClientServer::setValuesFromInput(const string &inputMsg) {
+string KNN_Client_Handler::setValuesFromInput(const string &inputMsg) {
     const static regex distancePat {"(AUC|MAN|CHB|CAN|MIN)"};
     const static regex kPat {"(^\\s*\\d+)"};
     std::stringstream s;
@@ -216,7 +217,7 @@ string KNN_ClientServer::setValuesFromInput(const string &inputMsg) {
  * @param inputMsg input string from client
  * @return string representation of classification of the input vector parsed from inputMsg
  */
-string KNN_ClientServer::parseK(const string &inputMsg) {
+string KNN_Client_Handler::parseK(const string &inputMsg) {
     const static regex kPat {"(^\\s*\\d+\\s)"};
 
     // parse k value from message
@@ -233,7 +234,7 @@ string KNN_ClientServer::parseK(const string &inputMsg) {
  * @param inputMsg input string from client
  * @return string representation of classification of the input vector parsed from inputMsg
  */
-string KNN_ClientServer::parseDistanceMetric(const string &inputMsg) {
+string KNN_Client_Handler::parseDistanceMetric(const string &inputMsg) {
     const static regex validateDistancePat {"\\s(AUC|MAN|CHB|CAN|MIN)\\s*$"};
     const static regex distancePat {"(AUC|MAN|CHB|CAN|MIN)"};
 
@@ -255,7 +256,7 @@ string KNN_ClientServer::parseDistanceMetric(const string &inputMsg) {
  * @param inputMsg input string from client
  * @return string representation of classification of the input vector parsed from inputMsg
  */
-void KNN_ClientServer::setValues(const string &kValStr, const string &distMethod) {
+void KNN_Client_Handler::setValues(const string &kValStr, const string &distMethod) {
     int kVal;
 
     try {
@@ -275,7 +276,7 @@ void KNN_ClientServer::setValues(const string &kValStr, const string &distMethod
  * @param pat regex pattern
  * @return string matching the pattern
  */
-string KNN_ClientServer::parseFromBuff(string buff, const regex& pat) {
+string KNN_Client_Handler::parseFromBuff(string buff, const regex& pat) {
 
     smatch matches;
 
@@ -288,17 +289,17 @@ string KNN_ClientServer::parseFromBuff(string buff, const regex& pat) {
 }
 
 // add dataset to server
-void KNN_ClientServer::addDataset(string filename) {
+void KNN_Client_Handler::addDataset(string filename) {
     dataset = KNN_Set::createSetBasic(filename);
 }
 
 // add test dataset to server
-void KNN_ClientServer::addUnclassifiedSet(string filename) {
+void KNN_Client_Handler::addUnclassifiedSet(string filename) {
     // read file and return vector of vectors.
     unclassified = KNN_Set::createSetBasicWithTest(filename);
 }
 
-void KNN_ClientServer::operateOnInput(std::string input, DefaultIO& dio) {
+void KNN_Client_Handler::operateOnInput(std::string input, DefaultIO& dio) {
 
     // if input = "/n" exit
     // else:

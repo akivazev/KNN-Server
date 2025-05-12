@@ -2,7 +2,7 @@
 
 using std::stringstream;
 
-CLI::CLI(KNN_ClientServer &clientServer, DefaultIO &dio) : dio(dio), commands(clientServer, dio, noExit),
+CLI::CLI(KNN_Client_Handler &clientServer, DefaultIO &dio) : dio(dio), commands(clientServer, dio, noExit),
                                                            noExit(true){}
 void CLI::start() {
     string choice;
@@ -50,7 +50,7 @@ int CLI::getChoice() {
     return -1; // invalid input
 }
 
-Commands::Commands(KNN_ClientServer& clientServer, DefaultIO& dio, bool& noExit)
+Commands::Commands(KNN_Client_Handler& clientServer, DefaultIO& dio, bool& noExit)
         : uploadCsv(clientServer, dio), algoSettings(clientServer, dio),
           classifyData(clientServer, dio), displayResults(clientServer, dio),
           downloadResults(clientServer, dio), _exit(clientServer, dio, noExit),

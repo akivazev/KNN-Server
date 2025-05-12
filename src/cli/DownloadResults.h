@@ -7,14 +7,14 @@
 
 #include <fstream>
 #include <thread>
-#include "../knnserver/KNN_ClientServer.h"
+#include "../knnserver/KNN_Client_Handler.h"
 #include "Command.h"
 
 using namespace std;
 
 class DownloadResults : public Command{
 public:
-    DownloadResults(KNN_ClientServer& clientServerPtr, DefaultIO& dio);
+    DownloadResults(KNN_Client_Handler& clientServerPtr, DefaultIO& dio);
     void execute() override;
 private:
 };

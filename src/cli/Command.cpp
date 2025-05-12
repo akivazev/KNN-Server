@@ -4,7 +4,7 @@
 
 #include "Command.h"
 
-Command::Command(std::string cmdDescription, DefaultIO& dio, KNN_ClientServer& clientServerPtr)
+Command::Command(std::string cmdDescription, DefaultIO& dio, KNN_Client_Handler& clientServerPtr)
     : description(cmdDescription), dio(dio), client_server(clientServerPtr) {}
 
 string Command::getDescription() {

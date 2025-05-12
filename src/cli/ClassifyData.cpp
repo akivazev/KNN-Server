@@ -6,7 +6,7 @@
 
 const string cmdDescription{"classify data"};
 
-ClassifyData::ClassifyData(KNN_ClientServer& clientServerPtr, DefaultIO& dio) :
+ClassifyData::ClassifyData(KNN_Client_Handler& clientServerPtr, DefaultIO& dio) :
     Command(cmdDescription, dio, clientServerPtr) {}
 
 void ClassifyData::execute() {

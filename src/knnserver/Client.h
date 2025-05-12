@@ -10,7 +10,7 @@
 #include <string>
 #include <cstring>
 #include "AbstractPeer.h"
-#include "KNN_ClientServer.h"
+#include "KNN_Client_Handler.h"
 
 using namespace std;
 
