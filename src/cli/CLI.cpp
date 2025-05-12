@@ -2,8 +2,8 @@
 
 using std::stringstream;
 
-CLI::CLI(KNN_ClientServer &clientServer, DefaultIO &dio) : dio(dio), noExit(true),
-                                                           commands(clientServer, dio, noExit){}
+CLI::CLI(KNN_ClientServer &clientServer, DefaultIO &dio) : dio(dio), commands(clientServer, dio, noExit),
+                                                           noExit(true){}
 void CLI::start() {
     string choice;
     map<int, Command&> commandMap = commands.command_map;

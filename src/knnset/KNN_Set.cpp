@@ -4,7 +4,7 @@
  * Constructor for KNN_Set without a given number of neighbors,
  * size 0 for vectors in file, and without any given distance method.
  */
-KNN_Set::KNN_Set() : sizeOfVectors(0), distanceFinder("AUC"), kVal(5) {
+KNN_Set::KNN_Set() : kVal(5), sizeOfVectors(0), distanceFinder("AUC") {
 
 }
 
