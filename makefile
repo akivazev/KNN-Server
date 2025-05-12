@@ -1,5 +1,5 @@
 # compiler
-CXX = g++
+CXX = clang++
 
 # compiler flags
 CXXFLAGS = -Wall -g -std=c++11
@@ -12,26 +12,32 @@ SRC_DIR = cli knnserver knnset
 
 SRC_ALL = $(wildcard src/cli/*.cpp) $(wildcard src/knnserver/*.cpp) $(wildcard src/knnset/*.cpp)
 
-SRCS1 = $(SRC_ALL) src/main/server_main.cpp
+SRC_SERVER = $(wildcard src/cli/*.cpp) $(wildcard src/knnset/*.cpp) src/knnserver/AbstractPeer.cpp \
+	src/knnserver/KNN_ClientServer.cpp src/knnserver/KNN_MainServer.cpp src/main/server_main.cpp
 
-SRCS2 = $(SRC_ALL) src/main/client_main.cpp
+SRC_CLIENT = $(SRC_ALL) src/main/client_main.cpp
 
 # object files
-OBJS1 = $(SRCS1:.cpp=.o)
-OBJS2 = $(SRCS2:.cpp=.o)
+OBJS_SERVER = $(SRC_SERVER:.cpp=.o)
+
+OBJS_CLIENT = $(SRC_CLIENT:.cpp=.o)
 
 
 all: server.out client.out
 
-server.out: $(OBJS1)
+server: server.out
+
+server.out: $(OBJS_SERVER)
 	$(CXX) $(CXXFLAGS) -o $@ $^
-client.out: $(OBJS2)
+	rm $(OBJS_SERVER)
+
+client.out: $(OBJS_CLIENT)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 clean_objs:
-	rm -f $(OBJS1) $(OBJS2)
+	rm -f $(OBJS_SERVER) $(OBJS_CLIENT)
 clean:
-	rm -f $(OBJS1) $(OBJS2) *.out
+	rm -f $(OBJS_SERVER) $(OBJS_CLIENT) *.out
